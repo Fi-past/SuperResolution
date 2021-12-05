@@ -8,8 +8,8 @@ class FSRCNN(nn.Module):
         super(FSRCNN, self).__init__()
         scale_factor=2
         num_channels=1
-        d=56
-        s=12
+        d=96
+        s=24
         m=4
         self.first_part = nn.Sequential(
             # 1 56 224 224
@@ -27,19 +27,19 @@ class FSRCNN(nn.Module):
         # 56 1 
         self.last_part = nn.ConvTranspose2d(d, num_channels, kernel_size=9, stride=scale_factor, padding=9//2,
                                             output_padding=scale_factor-1)
-    #     self._initialize_weights()
+        self._initialize_weights()
 
-    # def _initialize_weights(self):
-    #     for m in self.first_part:
-    #         if isinstance(m, nn.Conv2d):
-    #             nn.init.normal_(m.weight.data, mean=0.0, std=math.sqrt(2/(m.out_channels*m.weight.data[0][0].numel())))
-    #             nn.init.zeros_(m.bias.data)
-    #     for m in self.mid_part:
-    #         if isinstance(m, nn.Conv2d):
-    #             nn.init.normal_(m.weight.data, mean=0.0, std=math.sqrt(2/(m.out_channels*m.weight.data[0][0].numel())))
-    #             nn.init.zeros_(m.bias.data)
-    #     nn.init.normal_(self.last_part.weight.data, mean=0.0, std=0.001)
-    #     nn.init.zeros_(self.last_part.bias.data)
+    def _initialize_weights(self):
+        for m in self.first_part:
+            if isinstance(m, nn.Conv2d):
+                nn.init.normal_(m.weight.data, mean=0.0, std=math.sqrt(2/(m.out_channels*m.weight.data[0][0].numel())))
+                nn.init.zeros_(m.bias.data)
+        for m in self.mid_part:
+            if isinstance(m, nn.Conv2d):
+                nn.init.normal_(m.weight.data, mean=0.0, std=math.sqrt(2/(m.out_channels*m.weight.data[0][0].numel())))
+                nn.init.zeros_(m.bias.data)
+        nn.init.normal_(self.last_part.weight.data, mean=0.0, std=0.001)
+        nn.init.zeros_(self.last_part.bias.data)
         
     def forward(self, x):
         x = self.first_part(x)

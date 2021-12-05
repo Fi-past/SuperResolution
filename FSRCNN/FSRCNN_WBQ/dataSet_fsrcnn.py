@@ -18,38 +18,46 @@ def load_img(filepath):
 
 
 class DatasetFromFolder(Dataset):
-    def __init__(self, image_dir, zoom_factor):
+    def __init__(self, image_dir, zoom_factor,crop_size):
         super(DatasetFromFolder, self).__init__()
         # for x in listdir(image_dir):
         #     print(x)
         self.image_filenames = [join(image_dir, x) for x in listdir(image_dir) if is_image_file(x)]
         self.preTrans=transforms.Compose([
+                                transforms.CenterCrop(crop_size),
                                 transforms.RandomHorizontalFlip(p=0.5),
                                 transforms.RandomVerticalFlip(p=0.5),
                                 # transforms.RandomRotation(30),
-                                transforms.ColorJitter(brightness=0.3, contrast=0.3, hue=0.3),
+                                # transforms.ColorJitter(brightness=0.3, contrast=0.3, hue=0.3),
                                 ])
 
-        self.after_transform = transforms.Compose([
+        self.input_transform = transforms.Compose([
+                                transforms.Resize(crop_size//zoom_factor),
                                 transforms.ToTensor(),
                                 transforms.Normalize(mean=[0.5],std=[0.5]),
                                 ])
+
+        self.target_transform = transforms.Compose([
+                                transforms.ToTensor(),
+                                transforms.Normalize(mean=[0.5],std=[0.5]),
+                                ])
+
         self.zoom_factor=zoom_factor
 
     def __getitem__(self, index):
         input = load_img(self.image_filenames[index])
         input=self.preTrans(input)
 
-        height = (input.size[0]//self.zoom_factor)*self.zoom_factor
-        width = (input.size[1]//self.zoom_factor)*self.zoom_factor
+        # height = (input.size[0]//self.zoom_factor)*self.zoom_factor
+        # width = (input.size[1]//self.zoom_factor)*self.zoom_factor
 
         target = input.copy()
         
-        input=input.resize((height//self.zoom_factor,width//self.zoom_factor))
-        input = self.after_transform(input)
+        # input=input.resize((height//self.zoom_factor,width//self.zoom_factor))
+        input = self.input_transform(input)
 
-        target=target.resize((height,width))
-        target = self.after_transform(target)
+        # target=target.resize((height,width))
+        target = self.target_transform(target)
 
         return input, target
 

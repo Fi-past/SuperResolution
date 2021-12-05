@@ -7,8 +7,8 @@ import matplotlib.pyplot as plt
 
 # 准备修改一下，仿照那个作者的模式
 # crop_size = 224
-imgPath='F:\\Desktop\\All\\language\\VSCODEWORKSPACE\\Python\\Class\\计算机视觉\\SuperResolution\\SRCNN\\SRCNN-WBQ\\data\\my\\1.jpg'
-model_path='./model/FSRCNN_model_torch1_4_25_8.pth'
+imgPath='F:\\Desktop\\All\\language\\VSCODEWORKSPACE\\Python\\Class\\计算机视觉\\SuperResolution\\SRCNN\\SRCNN-WBQ\\data\\my\\butterfly.jpg'
+model_path='./model/FSRCNN_model_torch1_4_22_7.pth'
 
 with torch.no_grad():
     show=ToPILImage()
@@ -24,9 +24,9 @@ with torch.no_grad():
 
     y, cb, cr = img.split()
 
-    # cb=cb.resize((height,width))
-    # cr=cr.resize((height,width))
-    # y=y.resize((height//2,width//2))
+    # cb=cb.resize((height*2,width*2))
+    # cr=cr.resize((height*2,width*2))
+    # y=y.resize((height,width))
 
     RSCNN_model = torch.load(model_path,map_location='cpu')
     RSCNN_model.eval()
@@ -52,6 +52,8 @@ with torch.no_grad():
 
     # input=show((img_tensor+1)/2)
     # target=show((out+1)/2)
+
+    target.save('./img.jpg')
 
     # 深色区域会有蓝色部分 是训练不充分的问题
     plt.subplot(1, 2, 1)
