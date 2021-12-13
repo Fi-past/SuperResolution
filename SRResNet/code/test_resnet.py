@@ -24,7 +24,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 if __name__ == '__main__':
     show=ToPILImage()
     # 预训练模型
-    SRResNet_model_path = "../model/rsresnet_24_7.pth"
+    SRResNet_model_path = "../model/rsresnet_26_8_fun.pth"
 
     # 加载模型SRResNet 或 SRGAN
     SRResNet = torch.load(SRResNet_model_path)
