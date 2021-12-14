@@ -12,6 +12,16 @@
 
 ### SRResNet
 
+提供kaggle版本--我的aistudio
+
+> https://aistudio.baidu.com/aistudio/projectdetail/3235557
+
 ### GAN
 
 （学习GAN使用，与SR无关）
+
+### EDSR
+
+对SRResNet的一种提升
+
+提供kaggle版本
