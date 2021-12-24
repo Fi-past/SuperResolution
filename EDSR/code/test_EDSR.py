@@ -8,6 +8,9 @@ import matplotlib.pyplot as plt
 from netmodel_EDSR import EDSR
 
 # 测试图像
+# hi.jpg
+# img_003_SRF_2_LR.png
+
 imgPath = '../../SRCNN/SRCNN-WBQ/data/my/img_003_SRF_2_LR.png'
 
 # 模型参数

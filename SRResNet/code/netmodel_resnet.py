@@ -3,6 +3,8 @@ from torch import nn
 import torchvision
 import math
 
+# https://github.com/ZhaoHengrun/EDSR/blob/master/model.py
+
 
 # 是可以保持w，h不变的
 class ConvolutionalBlock(nn.Module):

@@ -10,7 +10,6 @@ from torchvision.transforms import ToPILImage
 import matplotlib.pyplot as plt
 
 
-
 class SRDataset(Dataset):
 
     def __init__(self, data_path, crop_size, scaling_factor):
@@ -42,6 +41,7 @@ class SRDataset(Dataset):
                                 ])
 
         self.input_transform = transforms.Compose([
+                                transforms.Resize(self.crop_size//(self.scaling_factor*2)),
                                 transforms.Resize(self.crop_size//self.scaling_factor),
                                 transforms.ToTensor(),
                                 transforms.Normalize(mean=[0.5],std=[0.5]),
@@ -72,12 +72,21 @@ class SRDataset(Dataset):
 
 # 单元测试通过
 def main():
+    show=ToPILImage()
     train_path='../../SRCNN/SRCNN-WBQ/data/train'
     test_path='../../SRCNN/SRCNN-WBQ/data/test'
     ds=SRDataset(train_path,224,2)
     l,h=ds[0]
     print(l.shape)
     print(h.shape)
+
+    plt.subplot(1, 2, 1)
+    plt.imshow(show((l+1)/2))
+    plt.title('l')
+    plt.subplot(1, 2, 2)
+    plt.imshow(show((h+1)/2))
+    plt.title('h')
+    plt.show()
 
 
 
